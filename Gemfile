@@ -11,3 +11,6 @@ gem 'airbrussh', '~> 0.8.0'
 
 gem 'rspec'
 gem 'rake'
+gem 'travis'
+
+gem 'octokit', '~> 4.0'
