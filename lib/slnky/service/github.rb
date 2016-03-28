@@ -28,6 +28,8 @@ module Slnky
       end
 
       def handle_hooks(name, data)
+        # don't do anything when not in production
+        return true if @environment != 'production'
         repos =  @github.org_repos(@org)
         repos.each do |r|
           setup_hooks(r.full_name)
