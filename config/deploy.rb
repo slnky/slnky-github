@@ -1,17 +1,14 @@
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
-set :application, '/Users/shawn/slnky/slnky-github'
-set :repo_url, 'git@github.com:something//Users/shawn/slnky/slnky-github.git'
-
-rubyversion = File.read('.ruby-version').chomp
-rubygemset = File.read('.ruby-gemset').chomp
+set :application, 'slnky-github'
+set :repo_url, 'git@github.com:slnky/slnky-github.git'
 
 set :deploy_to, "#{ENV['DEPLOY_DIR']}/#{fetch(:application)}#{fetch(:stage) == 'staging' ? '-stg' : ''}"
 
 set :keep_releases, 5
 
-set :rvm_ruby_version, "#{rubyversion}@#{rubygemset}"      # Defaults to: 'default'
+set :rvm_ruby_version, File.read('.ruby-version').chomp      # Defaults to: 'default'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
