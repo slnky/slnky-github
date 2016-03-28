@@ -6,13 +6,13 @@ module Slnky
     class Github < Base
       def initialize(url, options={})
         super(url, options)
-        @token = config.github.token
         Octokit.auto_paginate = true
-        @github = Octokit::Client.new(access_token: @token)
+        @token = config.github.token
         @org = config.github.org
         @hipchat_token = config.github.hipchat_token
         @hipchat_room = config.github.hipchat_room
         @filter = config.github.filter
+        @github = Octokit::Client.new(access_token: @token)
       end
 
       # when this message is sent, run the setup_hooks method
@@ -37,7 +37,6 @@ module Slnky
 
       def handle_repo(name, data)
         repo = data.repository.full_name
-        log :warn, "repo '#{repo}' created, updating hooks"
         setup_hooks(repo)
         true
       end
@@ -45,10 +44,15 @@ module Slnky
       protected
 
       def setup_hooks(repo)
+        # don't do anything when not in production
+        return true if @environment != 'production'
         # if filter is set and repo doesn't match, return
         return if @filter && repo !~ /^#{@filter}/
         # return if hipchat is already configured, this avoids overwriting config
+        hooks = @github.hooks(repo)
         return if hooks.select {|h| h[:name] == 'hipchat'}.count > 0
+
+        log :warn, "repo '#{repo}' created, updating hooks"
         hipchat = Octokit.available_hooks.select{|h| h[:name] == 'hipchat'}.first
         config = {
             auth_token: @hipchat_token,

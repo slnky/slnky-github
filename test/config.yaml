@@ -9,4 +9,5 @@ github:
   org: <%= ENV['GITHUB_ORG'] %>
   token: <%= ENV['GITHUB_TOKEN'] %>
   hipchat_token: <%= ENV['GITHUB_HIPCHAT_TOKEN'] %>
+  filter:
   hipchat_room: <%= ENV['GITHUB_HIPCHAT_ROOM'] %>
