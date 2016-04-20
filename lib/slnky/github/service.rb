@@ -2,7 +2,6 @@ module Slnky
   module Github
     class Service < Slnky::Service::Base
       attr_writer :client
-
       def client
         @client ||= Slnky::Github::Client.new
       end
@@ -21,21 +20,21 @@ module Slnky
       def handle_test(name, data)
         name == 'slnky.service.test' &&
             data.hello == 'world!' &&
-            @client.user.login == 'shawncatz'
+            client.user.login == 'shawncatz'
       end
 
       def handle_hooks(name, data)
         # don't do anything when not in production
         # return true if @environment != 'production'
-        repos = @client.org_repos
+        repos = client.org_repos
         repos.each do |r|
-          @client.setup_hooks(r.full_name)
+          client.setup_hooks(r.full_name)
         end
       end
 
       def handle_repo(name, data)
         repo = data.repository.full_name
-        @client.setup_hooks(repo)
+        client.setup_hooks(repo)
       end
     end
   end

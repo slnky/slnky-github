@@ -34,7 +34,7 @@ module Slnky
       USAGE
       def handle_setup_hooks(request, response, opts)
         repo = opts.repo
-        @client.setup_hooks(repo)
+        client.setup_hooks(repo)
       end
     end
   end
