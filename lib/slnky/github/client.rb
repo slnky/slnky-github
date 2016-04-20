@@ -1,11 +1,9 @@
-require 'slnky'
 require 'octokit'
 
 module Slnky
-  module Service
-    class Github < Base
-      def initialize(url, options={})
-        super(url, options)
+  module Github
+    class Client < Slnky::Client::Base
+      def initialize
         Octokit.auto_paginate = true
         @token = config.github.token
         @org = config.github.org
@@ -15,46 +13,24 @@ module Slnky
         @github = Octokit::Client.new(access_token: @token)
       end
 
-      # when this message is sent, run the setup_hooks method
-      # for all repos in the selected org
-      subscribe 'slnky.github.hooks', :handle_hooks
-      # when a new repo is created, setup hooks
-      subscribe 'github.repo.create', :handle_repo
-
-      def handler(name, data)
-        name == 'slnky.service.test' &&
-            data.hello == 'world!' &&
-            @github.user.login == 'shawncatz'
+      def user
+        @github.user
       end
 
-      def handle_hooks(name, data)
-        # don't do anything when not in production
-        return true if @environment != 'production'
-        repos =  @github.org_repos(@org)
-        repos.each do |r|
-          setup_hooks(r.full_name)
-        end
-        true
+      def org_repos
+        @github.org_repos(@org)
       end
-
-      def handle_repo(name, data)
-        repo = data.repository.full_name
-        setup_hooks(repo)
-        true
-      end
-
-      protected
 
       def setup_hooks(repo)
         # don't do anything when not in production
-        return true if @environment != 'production'
+        return unless config.production?
         # if filter is set and repo doesn't match, return
         return if @filter && repo !~ /^#{@filter}/
         # return if hipchat is already configured, this avoids overwriting config
         hooks = @github.hooks(repo)
         return if hooks.select {|h| h[:name] == 'hipchat'}.count > 0
 
-        log :warn, "repo '#{repo}' created, updating hooks"
+        log.warn "repo '#{repo}' created, updating hooks"
         hipchat = Octokit.available_hooks.select{|h| h[:name] == 'hipchat'}.first
         config = {
             auth_token: @hipchat_token,

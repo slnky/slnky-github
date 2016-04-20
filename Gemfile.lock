@@ -11,7 +11,7 @@ GEM
     airbrussh (0.8.0)
       sshkit (>= 1.6.1, != 1.7.0)
     amq-protocol (1.9.2)
-    amqp (1.5.1)
+    amqp (1.5.3)
       amq-protocol (~> 1.9)
       eventmachine
     backports (3.6.8)
@@ -28,6 +28,7 @@ GEM
     clamp (1.0.0)
     daemons (1.2.3)
     diff-lcs (1.2.5)
+    docopt (0.5.0)
     domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.1.1)
@@ -89,12 +90,14 @@ GEM
     sawyer (0.7.0)
       addressable (>= 2.3.5, < 2.5)
       faraday (~> 0.8, < 0.10)
-    slnky (0.8.3)
+    slnky (0.11.0)
       activesupport (~> 4.2.5.1)
       amqp (~> 1.5.1)
       clamp (~> 1.0.0)
+      docopt (~> 0.5.0)
       dotenv (~> 2.1.0)
       eventmachine (~> 1.0.9.1)
+      highline (~> 1.7.8)
       rest-client (~> 1.8.0)
       tilt (~> 2.0.2)
     sshkit (1.9.0)
@@ -133,8 +136,8 @@ DEPENDENCIES
   octokit (~> 4.0)
   rake
   rspec
-  slnky (~> 0.8.3)
-  travis
+  slnky (~> 0.11.0)
+  travis (~> 1.8.2)
 
 BUNDLED WITH
    1.11.2

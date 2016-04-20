@@ -8,7 +8,7 @@ set :deploy_to, "#{ENV['DEPLOY_DIR']}/#{fetch(:application)}#{fetch(:stage) == '
 
 set :keep_releases, 5
 
-set :rvm_ruby_version, File.read('.ruby-version').chomp      # Defaults to: 'default'
+set :rvm_ruby_version, File.read('.ruby-version').chomp     # Defaults to: 'default'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
