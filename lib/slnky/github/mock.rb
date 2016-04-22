@@ -3,9 +3,9 @@ module Slnky
     class Mock < Slnky::Github::Client
       # unless there's something special you need to do in the initializer
       # use the one provided by the actual client object
-      # def initialize
-      #
-      # end
+      def initialize
+
+      end
 
       # override methods of the client here to mock them for testing
       def user
