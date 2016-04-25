@@ -31,7 +31,16 @@ module Slnky
         setup_hipchat_hooks(repo, options)
       end
 
-      protected
+      def list_hooks
+        org_repos.each do |repo|
+          hooks = @github.hooks(repo.full_name)
+          hipchat = hooks.select {|h| h[:name] == 'hipchat'}.first
+          if hipchat
+            log.info "repo: #{repo.full_name} => #{hipchat[:config][:room]}"
+            log.info "      last: #{hipchat[:last_response][:code]} #{hipchat[:last_response][:status]}"
+          end
+        end
+      end
 
       def setup_hipchat_hooks(repo, options={})
         hooks = @github.hooks(repo)

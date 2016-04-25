@@ -37,6 +37,16 @@ module Slnky
         repo = opts.repo
         client.setup_hooks(repo, force: opts.force)
       end
+
+      command :list_hooks, 'list hooks for all repos', <<-USAGE.strip_heredoc
+        Usage: list_hooks [options] [REPO]
+
+        the REPO must be full repo name (user/repo or org/repo)
+        -h --help           print help.
+      USAGE
+      def handle_list_hooks(request, response, opts)
+        client.list_hooks
+      end
     end
   end
 end
