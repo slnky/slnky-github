@@ -31,10 +31,11 @@ module Slnky
 
         the REPO must be full repo name (user/repo or org/repo)
         -h --help           print help.
+        -f --force          overwrite hooks if they already exist
       USAGE
       def handle_setup_hooks(request, response, opts)
         repo = opts.repo
-        client.setup_hooks(repo)
+        client.setup_hooks(repo, force: opts.force)
       end
     end
   end

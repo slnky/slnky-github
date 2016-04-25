@@ -21,14 +21,25 @@ module Slnky
         @github.org_repos(@org)
       end
 
-      def setup_hooks(repo)
+      def setup_hooks(repo, options={})
+        options = {force: false}.merge(options)
         # don't do anything when not in production
         return unless config.production?
         # if filter is set and repo doesn't match, return
         return if @filter && repo !~ /^#{@filter}/
-        # return if hipchat is already configured, this avoids overwriting config
+
+        setup_hipchat_hooks(repo, options)
+      end
+
+      protected
+
+      def setup_hipchat_hooks(repo, options={})
         hooks = @github.hooks(repo)
-        return if hooks.select {|h| h[:name] == 'hipchat'}.count > 0
+        if hooks.select {|h| h[:name] == 'hipchat'}.count > 0 && !options[:force]
+          # return if hipchat is already configured, this avoids overwriting config
+          log.info "hipchat hook already configured, not forcing"
+          return
+        end
 
         log.warn "repo '#{repo}' created, updating hooks"
         hipchat = Octokit.available_hooks.select{|h| h[:name] == 'hipchat'}.first
