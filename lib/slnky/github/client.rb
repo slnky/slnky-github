@@ -50,7 +50,6 @@ module Slnky
           return
         end
 
-        log.warn "repo '#{repo}' created, updating hooks"
         hipchat = Octokit.available_hooks.select{|h| h[:name] == 'hipchat'}.first
         config = {
             auth_token: @hipchat_token,

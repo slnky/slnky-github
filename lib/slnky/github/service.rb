@@ -34,6 +34,7 @@ module Slnky
 
       def handle_repo(name, data)
         repo = data.repository.full_name
+        log.warn "repo '#{repo}' created, updating hooks"
         client.setup_hooks(repo)
       end
     end

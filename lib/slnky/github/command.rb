@@ -35,6 +35,7 @@ module Slnky
       USAGE
       def handle_setup_hooks(request, response, opts)
         repo = opts.repo
+        log.warn "configuring hooks for repo '#{repo}'"
         client.setup_hooks(repo, force: opts.force)
       end
 
